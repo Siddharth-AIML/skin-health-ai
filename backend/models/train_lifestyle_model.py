@@ -1,8 +1,8 @@
 import pandas as pd
-from sklearn.model_selection import train_test_split
+from sklearn.model_selection import cross_val_score, train_test_split
 from sklearn.ensemble import RandomForestClassifier
 import joblib
-
+from xgboost import XGBClassifier
 df = pd.read_csv("C:/Users/siddh/Skin_Health_System/backend/data/lifestyle_dataset.csv")
 
 # Encode categorical
@@ -38,9 +38,24 @@ model = RandomForestClassifier(
     max_depth=10
 )
 
+
+model1 = XGBClassifier(
+    n_estimators=200,
+    max_depth=6,
+    learning_rate=0.1,
+    reg_lambda=1,
+    reg_alpha=0.5
+)
+
 model.fit(X_train,y_train)
+model1.fit(X_train,y_train)
 
 joblib.dump(model,"C:/Users/siddh/Skin_Health_System/backend/models/lifestyle_model.pkl")
+joblib.dump(model1,"C:/Users/siddh/Skin_Health_System/backend/models/lifestyle_model1.pkl")
 
 print("Model trained")
+
+scores = cross_val_score(model, X, y, cv=5)
+print("CV Accuracy:", scores.mean())
 print("Accuracy:",model.score(X_test,y_test))
+print("Accuracy (XGB):",model1.score(X_test,y_test))

@@ -52,7 +52,7 @@ model = SkinCNN().to(device)
 criterion = nn.CrossEntropyLoss()
 optimizer = optim.Adam(model.parameters(), lr=0.001)
 
-epochs = 9
+epochs = 10
 
 for epoch in range(epochs):
     model.train()
@@ -104,4 +104,4 @@ print("\nFinal Test Accuracy:", f"{test_acc:.2f}%")
 
 
 torch.save(model.state_dict(), "models/skin_cnn.pth")
-print("Model saved!")
+print("Model saved")
